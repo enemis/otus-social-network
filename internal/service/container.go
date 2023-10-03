@@ -17,7 +17,7 @@ type Container struct {
 }
 
 func NewContainer(config *config.Config) (*Container, error) {
-	connectString := fmt.Sprintf("user=%s dbname=%s password=%s sslmode=%s", config.DBUsername, config.DBName, config.DBPassword, config.DBSSLMode)
+	connectString := fmt.Sprintf("host=%s user=%s dbname=%s password=%s sslmode=%s", config.DBHost, config.DBUsername, config.DBName, config.DBPassword, config.DBSSLMode)
 	logrus.Debug("db connect string: ")
 	logrus.Debugln(connectString)
 	db, err := sqlx.Connect("postgres", connectString)

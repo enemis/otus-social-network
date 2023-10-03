@@ -1,27 +1,17 @@
 version: "3.9"
 services:
-#     social_network:
-#         image: enemis/docker-php-stuntex:8.1
-#         container_name: stuntex
-#         volumes:
-#             - ./:/var/www/stuntex:delegated
-#             - ./../stuntexshop.ru/:/var/www/stuntexshop:delegated
-#             - ./.composer/:/var/www/.composer/:delegated
-#             - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:delegated
+  social_network:
+      container_name: social_network
+      build:
+        context: .
+        dockerfile: Dockerfile
+      depends_on:
+        - postgres
+      ports:
+      - "${SERVER_PORT}:8080"  
 
-#         working_dir: /var/www/stuntex
-#         logging:
-#             driver: loki
-#             options:
-#                 loki-url: "https://610863:eyJrIjoiZjdjOWU2MjE5MjBlOGNmYzYzYmYyNjM0ZGNjMjNmZTYxMmVjMWM2MiIsIm4iOiJzdHVudGV4MiIsImlkIjo4NjkwNjh9@logs-prod-008.grafana.net/loki/api/v1/push"
-#         depends_on:
-#             - db_stuntex
-#         environment:
-#             - TZ=Europe/Moscow
-# #            - APP_ENV=prod
-# #            - VIRTUAL_HOST=stuntex,localhost
-#             - PHP_IDE_CONFIG=serverName=stuntex
   postgres:
+    container_name: postgres
     image: postgres:15.4
     environment:
       POSTGRES_DB: "${DB_NAME}"
@@ -41,8 +31,7 @@ services:
 volumes:
   pg-data:
 
-   
 
 networks:
     default:
-        name: stuntex
+        name: social_network
