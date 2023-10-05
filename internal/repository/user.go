@@ -79,18 +79,11 @@ func (r *UserRepositoryInstance) GetUser(email, password string) (*model.User, *
 }
 
 func (r *UserRepositoryInstance) GetUserById(userId uuid.UUID) (*model.User, *app_error.HttpError) {
-	rows, err := r.db.Queryx("SELECT * FROM users WHERE id=$1", userId)
-	if err != nil {
-		return new(model.User), app_error.NewInternalServerError(err)
-	}
-	defer rows.Close()
-
 	var user model.User
-	for rows.Next() {
-		err = rows.StructScan(&user)
-		if err != nil {
-			return new(model.User), app_error.NewInternalServerError(err)
-		}
+	err := r.db.Get(&user, "SELECT * FROM users WHERE id=$1 LIMIT 1", userId)
+
+	if err != nil {
+		return new(model.User), app_error.NewHttpError(err, "user not found", "user_id", http.StatusBadRequest)
 	}
 
 	return &user, nil

@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 func (h *Handler) UserPage(c *gin.Context) {
@@ -28,7 +29,10 @@ func (h *Handler) UserPage(c *gin.Context) {
 
 	user, httpError := h.UserService.GetUserById(userUUID)
 
+	logrus.Debug(user)
+	logrus.Debugln(httpError)
 	if httpError != nil {
+		logrus.Debugln("not nil")
 		response.HttpErrorResponse(c, httpError)
 		return
 	}

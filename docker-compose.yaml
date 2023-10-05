@@ -30,7 +30,6 @@ services:
 volumes:
   pg-data:
 
-
 networks:
     default:
         name: social_network
