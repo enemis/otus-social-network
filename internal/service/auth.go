@@ -27,7 +27,7 @@ type AuthServiceInstance struct {
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	UserId uuid.UUID `json:"user_id`
+	UserId uuid.UUID `json:"user_id"`
 }
 
 type AuthService interface {

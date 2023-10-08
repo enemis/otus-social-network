@@ -21,6 +21,7 @@ func NewContainer(config *config.Config) (*Container, error) {
 	logrus.Debug("db connect string: ")
 	logrus.Debugln(connectString)
 	db, err := sqlx.Connect("postgres", connectString)
+	db.SetMaxOpenConns(80)
 
 	if err != nil {
 		return nil, err
