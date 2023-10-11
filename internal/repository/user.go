@@ -17,6 +17,7 @@ type UserRepository interface {
 	CreateUser(*dto.SignUpInput) (uuid.UUID, *app_error.HttpError)
 	GetUser(email, password string) (*model.User, *app_error.HttpError)
 	GetUserById(userId uuid.UUID) (*model.User, *app_error.HttpError)
+	FindUsers(name, surname string) ([]*model.User, *app_error.HttpError)
 }
 
 type UserRepositoryInstance struct {
@@ -87,4 +88,30 @@ func (r *UserRepositoryInstance) GetUserById(userId uuid.UUID) (*model.User, *ap
 	}
 
 	return &user, nil
+}
+
+func (r *UserRepositoryInstance) FindUsers(name, surname string) ([]*model.User, *app_error.HttpError) {
+	var users []*model.User
+	query := "SELECT * FROM users WHERE "
+	paramName := name + "%"
+	paramSurname := surname + "%"
+	limitPart := " LIMIT 30;"
+
+	var err error
+
+	if len(name) > 1 && len(surname) > 1 {
+		err = r.db.Select(&users, query+"(name LIKE $1 and surname LIKE $2) OR (surname LIKE $3 and name LIKE $4)"+limitPart, paramName, paramSurname, paramName, paramSurname)
+	} else if len(name) > 0 {
+		err = r.db.Select(&users, query+"name LIKE $1"+limitPart, paramName)
+	} else if len(surname) > 0 {
+		err = r.db.Select(&users, query+"surname LIKE $1"+limitPart, paramName)
+	} else {
+		err = r.db.Select(&users, query+limitPart)
+	}
+
+	if err != nil {
+		return users, app_error.NewHttpError(err, "user not found", "users", http.StatusBadRequest)
+	}
+
+	return users, nil
 }

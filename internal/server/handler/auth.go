@@ -36,7 +36,7 @@ func (h *Handler) SignIn(c *gin.Context) {
 	validator := g.Validator(input)
 
 	if err := c.BindJSON(&input); err != nil {
-		response.ErrorResponse(c, http.StatusBadRequest, validator.DecryptErrors(err).(map[string]interface{}))
+			response.ErrorResponse(c, http.StatusBadRequest, validator.DecryptErrors(err).(map[string]interface{}))
 		return
 	}
 

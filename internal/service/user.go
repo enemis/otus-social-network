@@ -2,6 +2,7 @@ package service
 
 import (
 	"otus-social-network/internal/app_error"
+	"otus-social-network/internal/dto"
 	"otus-social-network/internal/model"
 	"otus-social-network/internal/repository"
 
@@ -10,6 +11,7 @@ import (
 
 type UserService interface {
 	GetUserById(userId uuid.UUID) (*model.User, *app_error.HttpError)
+	FindUsers(search dto.FindUser) ([]*model.User, *app_error.HttpError)
 }
 
 type UserServiceInstance struct {
@@ -24,4 +26,8 @@ func NewUserService(repositoryManager *repository.RepositoryManager) *UserServic
 
 func (s *UserServiceInstance) GetUserById(userId uuid.UUID) (*model.User, *app_error.HttpError) {
 	return s.repositoryManager.GetUserById(userId)
+}
+
+func (s *UserServiceInstance) FindUsers(search dto.FindUser) ([]*model.User, *app_error.HttpError) {
+	return s.repositoryManager.FindUsers(search.Name, search.Surname)
 }

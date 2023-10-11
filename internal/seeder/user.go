@@ -15,15 +15,15 @@ import (
 func (s *Seeder) UserSeed(count uint) {
 	wg := &sync.WaitGroup{}
 
-	jobs := make(chan int, count)
+	jobs := make(chan int)
 
-	for j := 0; j < int(count); j++ {
+	for i := 0; i < 20; i++ {
 		wg.Add(1)
-		jobs <- j
+		go userWorker(s, i, jobs, wg)
 	}
 
-	for i := 0; i < 1; i++ {
-		go userWorker(s, i, jobs, wg)
+	for j := 0; j < int(count); j++ {
+		jobs <- j
 	}
 
 	close(jobs)
@@ -71,6 +71,6 @@ func userWorker(s *Seeder, workerId int, jobs <-chan int, wg *sync.WaitGroup) {
 			fmt.Println(err.OriginalError())
 		}
 		fmt.Printf("worker %d done iteration #%d\n", workerId, j)
-		wg.Done()
 	}
+	wg.Done()
 }

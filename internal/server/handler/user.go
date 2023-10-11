@@ -9,7 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/sirupsen/logrus"
 )
 
 func (h *Handler) UserPage(c *gin.Context) {
@@ -29,13 +28,29 @@ func (h *Handler) UserPage(c *gin.Context) {
 
 	user, httpError := h.UserService.GetUserById(userUUID)
 
-	logrus.Debug(user)
-	logrus.Debugln(httpError)
 	if httpError != nil {
-		logrus.Debugln("not nil")
 		response.HttpErrorResponse(c, httpError)
 		return
 	}
 
 	response.Ok(c, user)
+}
+
+func (h *Handler) FindUsers(c *gin.Context) {
+	var input dto.FindUser
+	validator := validator.BuildValidator(input)
+
+	if err := c.ShouldBindQuery(&input); err != nil {
+		response.ErrorResponse(c, http.StatusBadRequest, validator.DecryptErrors(err).(map[string]interface{}))
+		return
+	}
+
+	users, httpError := h.UserService.FindUsers(input)
+
+	if httpError != nil {
+		response.HttpErrorResponse(c, httpError)
+		return
+	}
+
+	response.Ok(c, users)
 }
