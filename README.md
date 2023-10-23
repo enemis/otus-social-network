@@ -17,3 +17,5 @@ make
 ```
 
      3.  Import postman collections from file Otus higload.postman\_collection.json
+
+Some homeworks your might find in homework folder, unfortunatelly in russian.
