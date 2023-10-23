@@ -6,5 +6,6 @@ CREATE INDEX CONCURRENTLY IF NOT EXISTS surname_index ON users (lower((surname):
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+DROP INDEX IF EXISTS name_index;
+DROP INDEX IF EXISTS surname_index;
 -- +goose StatementEnd
