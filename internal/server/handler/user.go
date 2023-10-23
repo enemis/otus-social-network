@@ -52,5 +52,5 @@ func (h *Handler) FindUsers(c *gin.Context) {
 		return
 	}
 
-	response.Ok(c, users)
+	response.Ok(c, map[string]interface{}{"users": users})
 }

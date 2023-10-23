@@ -6,6 +6,7 @@ import (
 	"otus-social-network/internal/app_error"
 	"otus-social-network/internal/dto"
 	"otus-social-network/internal/model"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -91,20 +92,20 @@ func (r *UserRepositoryInstance) GetUserById(userId uuid.UUID) (*model.User, *ap
 }
 
 func (r *UserRepositoryInstance) FindUsers(name, surname string) ([]*model.User, *app_error.HttpError) {
-	var users []*model.User
+	users := make([]*model.User, 100)
 	query := "SELECT * FROM users WHERE "
-	paramName := name + "%"
-	paramSurname := surname + "%"
-	limitPart := " LIMIT 30;"
+	paramName := strings.ToLower(name) + "%"
+	paramSurname := strings.ToLower(surname) + "%"
+	limitPart := " ORDER BY id LIMIT 100;"
 
 	var err error
 
 	if len(name) > 1 && len(surname) > 1 {
-		err = r.db.Select(&users, query+"(name LIKE $1 and surname LIKE $2) OR (surname LIKE $3 and name LIKE $4)"+limitPart, paramName, paramSurname, paramName, paramSurname)
+		err = r.db.Select(&users, query+"(lower(name) LIKE $1 AND lower(surname) LIKE $2) OR (lower(surname) LIKE $3 AND lower(name) LIKE $4)"+limitPart, paramName, paramSurname, paramName, paramSurname)
 	} else if len(name) > 0 {
-		err = r.db.Select(&users, query+"name LIKE $1"+limitPart, paramName)
+		err = r.db.Select(&users, query+"lower(name) LIKE $1"+limitPart, paramName)
 	} else if len(surname) > 0 {
-		err = r.db.Select(&users, query+"surname LIKE $1"+limitPart, paramName)
+		err = r.db.Select(&users, query+"lower(surname) LIKE $1"+limitPart, paramSurname)
 	} else {
 		err = r.db.Select(&users, query+limitPart)
 	}
