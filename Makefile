@@ -20,4 +20,4 @@ migrations-down:
 
 
 seed:
-	docker run -i social_network seeder
+	docker exec -i social_network sh -c "/usr/local/bin/seeder"

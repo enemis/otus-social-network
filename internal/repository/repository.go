@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/jmoiron/sqlx"
+	"otus-social-network/internal/db"
+
 	_ "github.com/lib/pq"
 )
 
@@ -9,7 +10,7 @@ type RepositoryManager struct {
 	UserRepository
 }
 
-func NewRepositoryManager(db *sqlx.DB) *RepositoryManager {
+func NewRepositoryManager(db *db.DatabaseStack) *RepositoryManager {
 	return &RepositoryManager{
 		UserRepository: NewUserRepository(db),
 	}
