@@ -11,6 +11,8 @@ type Container struct {
 	repositoryManager *repository.RepositoryManager
 	authService       AuthService
 	userService       UserService
+	friendService     FriendService
+	postService       PostService
 }
 
 func NewContainer(config *config.Config) (*Container, error) {
@@ -25,6 +27,8 @@ func NewContainer(config *config.Config) (*Container, error) {
 
 	container.authService = NewAuthService(repositoryManager, config)
 	container.userService = NewUserService(repositoryManager)
+	container.friendService = NewFriendService(repositoryManager)
+	container.postService = NewPostService(repositoryManager)
 
 	return &container, nil
 }
@@ -35,4 +39,12 @@ func (c *Container) AuthService() AuthService {
 
 func (c *Container) UserService() UserService {
 	return c.userService
+}
+
+func (c *Container) FriendService() FriendService {
+	return c.friendService
+}
+
+func (c *Container) PostService() PostService {
+	return c.postService
 }

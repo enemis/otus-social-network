@@ -26,4 +26,5 @@ func (r *Router) initRoutes() {
 	authorized := r.engine.Group("/", middleware.AuthRequired(r.authService, r.userService))
 	r.initAuthRoutes(unauthorised)
 	r.initUserRoutes(authorized)
+	r.initFriendRoutes(authorized)
 }

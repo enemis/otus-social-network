@@ -32,5 +32,4 @@ func NewSeeder() (*SeedApp, error) {
 
 func (app *SeedApp) RunImport() {
 	app.seeder.Seed()
-
 }

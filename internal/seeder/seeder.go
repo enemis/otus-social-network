@@ -11,5 +11,5 @@ func NewSeeder(authService service.AuthService) *Seeder {
 }
 
 func (s *Seeder) Seed() {
-	s.UserSeed(1000000)
+	s.UserSeed(10000)
 }

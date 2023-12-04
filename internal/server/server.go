@@ -10,18 +10,19 @@ import (
 )
 
 type Server struct {
-	config      *config.Config
-	authService service.AuthService
-	userService service.UserService
+	config        *config.Config
+	authService   service.AuthService
+	userService   service.UserService
+	friendService service.FriendService
 }
 
-func NewServer(config *config.Config, authService service.AuthService, userService service.UserService) *Server {
-	return &Server{config: config, authService: authService, userService: userService}
+func NewServer(config *config.Config, authService service.AuthService, userService service.UserService, friendService service.FriendService) *Server {
+	return &Server{config: config, authService: authService, userService: userService, friendService: friendService}
 }
 
 func (s *Server) Run() error {
 	ginEngine := gin.Default()
-	handler := handler.NewHandler(s.authService, s.userService)
+	handler := handler.NewHandler(s.authService, s.userService, s.friendService)
 	router.NewRouter(handler, ginEngine, s.authService, s.userService)
 
 	return ginEngine.Run()

@@ -8,10 +8,14 @@ import (
 
 type RepositoryManager struct {
 	UserRepository
+	FriendRepository
+	PostRepository
 }
 
 func NewRepositoryManager(db *db.DatabaseStack) *RepositoryManager {
 	return &RepositoryManager{
-		UserRepository: NewUserRepository(db),
+		UserRepository:   NewUserRepository(db),
+		FriendRepository: NewFriendRepository(db),
+		PostRepository:   NewPostRepository(db),
 	}
 }

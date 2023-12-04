@@ -28,7 +28,7 @@ func NewApp() (*SocialNetworkApp, error) {
 }
 
 func (app *SocialNetworkApp) Run() error {
-	server := server.NewServer(app.config, app.container.AuthService(), app.container.UserService())
+	server := server.NewServer(app.config, app.container.AuthService(), app.container.UserService(), app.container.FriendService())
 	err := server.Run()
 
 	return err

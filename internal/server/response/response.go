@@ -16,6 +16,10 @@ func Ok(c *gin.Context, result interface{}) {
 	c.JSON(http.StatusOK, result)
 }
 
+func OkWithMessage(c *gin.Context, message string) {
+	c.JSON(http.StatusOK, map[string]interface{}{"message": message})
+}
+
 func Unauthorised(c *gin.Context, message string, originalError string) {
 	logrus.Error(originalError)
 	ErrorResponse(c, http.StatusUnauthorized, map[string]interface{}{"error": message})
